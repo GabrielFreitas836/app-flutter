@@ -1,8 +1,6 @@
-const knex = require('knex');
-
 require('dotenv').config();
 
-knex({
+const knex = require ('knex')({
     client: 'mysql2',
     connection: {
         port: 3306,
