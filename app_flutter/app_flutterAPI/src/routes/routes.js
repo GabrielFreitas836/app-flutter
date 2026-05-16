@@ -7,4 +7,6 @@ const productController = require('../controllers/productController.js');
 router.get('/orcamento/:userId', userController.listOrcamentoByUserId);
 router.get('/products', productController.listAllProducts);
 
+router.put('/orcamento/:userId', userController.RevampOrcamento);
+
 module.exports = router;

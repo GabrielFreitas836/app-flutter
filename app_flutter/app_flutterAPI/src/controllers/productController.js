@@ -20,7 +20,6 @@ class ProductController {
             res.status(500).json({success: false, message: "Erro interno do servidor!", error: error.message});
         }
     }
-    
 }
 
 module.exports = new ProductController();

@@ -26,6 +26,35 @@ class UserService {
             return {validated: false, message: error.message};
         }
     }
+
+    async updateOrcamentoByUserId(userId, orcamento) {
+
+        try {
+            if (!Number.isInteger(parseInt(userId)))
+            {
+                return {validated: false, isBadRequest: true, message: "ID de usuário inválido!"};
+            }
+            else if (!Number.isFinite(parseFloat(orcamento)))
+            {
+                return {validated: false, isBadRequest: true, message: "Valor de orçamento inválido!"};
+            }
+            else 
+            {
+                let updated_orcamento = await user.updateOrcamentoByUserId(userId, orcamento);
+
+                if (updated_orcamento == 0)
+                {
+                    return {validated: false, isBadRequest: false, message: "Falha ao atualizar o orçamento!"};
+                }
+                else 
+                {
+                    return {validated: true, isBadRequest: false, message: "Orçamento atualizado com sucesso!"};
+                }
+            }
+        } catch (error) {
+            return {validated: false, isBadRequest: false, message: error.message};
+        }
+    }
 }
 
 module.exports = new UserService();
