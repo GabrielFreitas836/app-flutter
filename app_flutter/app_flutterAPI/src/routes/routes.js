@@ -9,4 +9,6 @@ router.get('/products', productController.listAllProducts);
 
 router.put('/orcamento/:userId', userController.RevampOrcamento);
 
+router.post('/products/newProduct', productController.insertProduct);
+
 module.exports = router;

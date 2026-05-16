@@ -9,6 +9,17 @@ class Product {
 
         return products;
     }
+
+    async newProduct(description, p_value, v_type, categoryId) {
+        let product = await knex('produto').insert({
+            descricao: description,
+            valor_unitario: p_value,
+            tipo_unidade: v_type,
+            categoria_idcategoria: categoryId
+        });
+
+        return product;
+    }
 }
 
 module.exports = new Product();
