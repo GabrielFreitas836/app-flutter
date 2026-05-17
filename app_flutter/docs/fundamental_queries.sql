@@ -30,4 +30,5 @@ SELECT * FROM produto;
 -- Visualizando valores em conjunto das tabelas 'produto' e 'categoria'
 SELECT p.descricao, p.valor_unitario, p.tipo_unidade, ca.descricao 
 FROM produto p JOIN categoria ca 
-ON p.categoria_idcategoria = ca.idcategoria;
+ON p.categoria_idcategoria = ca.idcategoria
+ORDER BY p.idproduto;
