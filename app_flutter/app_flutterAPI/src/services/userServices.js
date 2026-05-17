@@ -96,13 +96,7 @@ class UserService {
                 if (getUser !== undefined)
                 {
                     let auth_token = token.generateToken(getUser.idUsuario);
-
-                    const decoded = token.verifyToken(auth_token);
-
-                    if (decoded)
-                    {
-                        return {validated: true, isBadRequest: false, message: "Usuário logado com sucesso!", token: auth_token};
-                    }
+                    return {validated: true, isBadRequest: false, message: "Usuário logado com sucesso!", token: auth_token};
                 }
                 else 
                 {
