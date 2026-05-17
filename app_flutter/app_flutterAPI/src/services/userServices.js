@@ -80,6 +80,31 @@ class UserService {
             return {validated: false, isBadRequest: false, message: error.message};
         }
     }
+
+    async getUserByCredentials(email, password) {
+
+        try {
+            if (email == null || password == null)
+            {
+                return {validated: false, isBadRequest: true, message: "Preencha os campos vazios!"};
+            }
+            else 
+            {
+                let getUser = await user.getUserByCredentials(email, password);
+
+                if (getUser !== undefined)
+                {
+                    return {validated: true, isBadRequest: false, message: "Usuário logado com sucesso!"};
+                }
+                else 
+                {
+                    return {validated: false, isBadRequest: false, message: "Usuário não encontrado!"};
+                }
+            }
+        } catch (error) {
+            return {validated: false, isBadRequest: false, message: error.message};
+        }
+    }
 }
 
 module.exports = new UserService();

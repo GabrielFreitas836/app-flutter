@@ -3,7 +3,9 @@ const knex = require('../data/connection.js');
 class User {
 
     async getOrcamentoByUserId(userId) {
-        let orcamento = await knex('usuario').select(["orcamento"]).where({'idUsuario': userId}).first();
+        let orcamento = await knex('usuario').select(["orcamento"])
+        .where({'idUsuario': userId}).first();
+
         return orcamento;
     }
 
@@ -22,6 +24,13 @@ class User {
             senha: password,
             orcamento: null
         });
+
+        return user;
+    }
+
+    async getUserByCredentials(email, password) {
+        let user = await knex('usuario').select(["idUsuario", "email", "senha"])
+        .where({'email': email, 'senha': password}).first();
 
         return user;
     }
