@@ -1,4 +1,5 @@
 const user = require('../models/userModel.js');
+const token = require('./auth/token.js');
 
 class UserService {
 
@@ -94,7 +95,14 @@ class UserService {
 
                 if (getUser !== undefined)
                 {
-                    return {validated: true, isBadRequest: false, message: "Usuário logado com sucesso!"};
+                    let auth_token = token.generateToken(getUser.idUsuario);
+
+                    const decoded = token.verifyToken(auth_token);
+
+                    if (decoded)
+                    {
+                        return {validated: true, isBadRequest: false, message: "Usuário logado com sucesso!", token: auth_token};
+                    }
                 }
                 else 
                 {
