@@ -10,6 +10,7 @@ router.get('/products', productController.listAllProducts);
 router.put('/orcamento/:userId', userController.RevampOrcamento);
 
 router.post('/products/newProduct', productController.insertProduct);
+router.post('/users/newUser', userController.singupUser);
 
 router.delete('/products/:productId', productController.deleteProduct);
 

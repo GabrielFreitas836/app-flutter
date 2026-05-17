@@ -14,6 +14,17 @@ class User {
 
         return updated_orcamento;
     }
+
+    async newUser(name, email, password) {
+        let user = await knex('usuario').insert({
+            nome: name,
+            email: email,
+            senha: password,
+            orcamento: null
+        });
+
+        return user;
+    }
 }
 
 module.exports = new User();

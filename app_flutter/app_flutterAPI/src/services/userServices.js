@@ -55,6 +55,31 @@ class UserService {
             return {validated: false, isBadRequest: false, message: error.message};
         }
     }
+
+    async newUser(name, email, password) {
+
+        try {
+            if (name == null || email == null || password == null)
+            {
+                return {validated: false, isBadRequest: true, message: "Preencha os campos vazios!"};
+            }
+            else 
+            {
+                let newUser = await user.newUser(name, email, password);
+
+                if (newUser.length == 0)
+                {
+                    return {validated: false, isBadRequest: false, message: "Falha ao cadastrar um novo usuário!"};
+                }
+                else 
+                {
+                    return {validated: true, isBadRequest: false, message: "Usuário cadastrado com sucesso!"};
+                }
+            }
+        } catch (error) {
+            return {validated: false, isBadRequest: false, message: error.message};
+        }
+    }
 }
 
 module.exports = new UserService();
