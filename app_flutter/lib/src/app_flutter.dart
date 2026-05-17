@@ -1,3 +1,4 @@
+import 'package:app_flutter/src/pages/catalog_page.dart';
 import 'package:flutter/material.dart';
 
 class AppFlutter extends StatelessWidget {
@@ -7,7 +8,10 @@ class AppFlutter extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'App Flutter',
-      debugShowCheckedModeBanner: false
+      debugShowCheckedModeBanner: false,
+      routes: {
+        '/': (_) => const CatalogPage()
+      },
     );
   }
 }
