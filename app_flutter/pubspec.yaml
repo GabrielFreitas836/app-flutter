@@ -1,5 +1,5 @@
 name: app_flutter
-description: "Projeto de catálogo interativo dos produtos da Argênzio de Casa Branca."
+description: "Projeto de catálogo interativo dos produtos de um supermercado genérico."
 publish_to: 'none'
 version: 0.1.0+1
 
