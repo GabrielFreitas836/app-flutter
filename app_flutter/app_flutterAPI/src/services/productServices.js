@@ -47,6 +47,32 @@ class ProductServices {
             return {validated: false, isBadRequest: false, message: error.message};
         }
     }
+
+    async removeProduct(productId) {
+
+        try {
+            
+            if (!Number.isInteger(parseInt(productId)))
+            {
+                return {validated: false, message: "ID de usuário inválido!"}
+            }
+            else 
+            {
+                let product = await products.removeProduct(productId);
+
+                if (product == 0)
+                {
+                    return {validated: false, message: "Falha ao remover o produto!"};
+                }
+                else 
+                {
+                    return {validated: true, message: "Produto removido com sucesso!"};
+                }
+            }
+        } catch (error) {
+            return {validated: false, message: error.message};
+        }
+    }
 }
 
 module.exports = new ProductServices();

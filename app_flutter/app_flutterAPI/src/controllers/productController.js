@@ -45,6 +45,27 @@ class ProductController {
             res.status(500).json({success: false, message: "Erro interno do servidor!", error: error.message});
         }
     }
+
+    async deleteProduct(req, res) {
+
+        let { productId } = req.params;
+
+        try {
+            
+            let result = await products.removeProduct(req.params.productId);
+
+            if (result.validated) 
+            {
+                res.status(200).json({success: true, message: result.message});
+            }
+            else 
+            {
+                res.status(404).json({success: false, message: result.message});
+            }
+        } catch (error) {
+            res.status(500).json({success: false, message: "Erro interno do servidor!", error: error.message});
+        }
+    }
 }
 
 module.exports = new ProductController();

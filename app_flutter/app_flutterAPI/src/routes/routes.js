@@ -11,4 +11,6 @@ router.put('/orcamento/:userId', userController.RevampOrcamento);
 
 router.post('/products/newProduct', productController.insertProduct);
 
+router.delete('/products/:productId', productController.deleteProduct);
+
 module.exports = router;

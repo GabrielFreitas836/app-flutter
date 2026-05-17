@@ -20,6 +20,14 @@ class Product {
 
         return product;
     }
+
+    async removeProduct(productId) {
+        let product = await knex('produto')
+        .where({'idProduto': productId})
+        .delete();
+
+        return product;
+    }
 }
 
 module.exports = new Product();
