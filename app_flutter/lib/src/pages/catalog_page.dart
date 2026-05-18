@@ -23,16 +23,27 @@ class CatalogPage extends StatelessWidget {
           color: Color.fromARGB(232, 248, 202, 202)
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            TextField(
-              decoration: InputDecoration(
-                label: Text('Orçamento'),
-                border: OutlineInputBorder()
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: TextField(
+                decoration: InputDecoration(
+                  label: Text('Orçamento'),
+                  enabled: false,
+                  border: OutlineInputBorder()
+                ),
               ),
+            ),
+            const SizedBox(height: 30),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                
+              ],
             )
           ],
-        ),
+        ) 
       ),
     );
   }
