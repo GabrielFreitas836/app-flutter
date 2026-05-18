@@ -1,3 +1,4 @@
+import 'package:app_flutter/src/widgets/double_card.dart';
 import 'package:flutter/material.dart';
 
 class CatalogPage extends StatelessWidget {
@@ -22,29 +23,44 @@ class CatalogPage extends StatelessWidget {
         decoration: const BoxDecoration(
           color: Color.fromARGB(232, 248, 202, 202)
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: TextField(
-                decoration: InputDecoration(
-                  label: Text('Orçamento'),
-                  enabled: false,
-                  border: OutlineInputBorder()
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8
+                ),
+                child: TextField(
+                  decoration: InputDecoration(
+                    label: Text('Orçamento'),
+                    enabled: false,
+                    border: OutlineInputBorder()
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 30),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                
-              ],
-            )
-          ],
-        ) 
-      ),
+              const SizedBox(height: 5),
+              DoubleCardWidget(
+                cardText: 'Teste',
+                padding: 16
+              ),
+              DoubleCardWidget(
+                cardText: 'Teste',
+                padding: 16
+              ),
+              DoubleCardWidget(
+                cardText: 'Teste',
+                padding: 16
+              ),
+              DoubleCardWidget(
+                cardText: 'Teste',
+                padding: 16
+              )
+            ]
+          ),
+        )
+      )
     );
   }
 }
