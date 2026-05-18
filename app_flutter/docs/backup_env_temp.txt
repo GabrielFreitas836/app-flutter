@@ -1,0 +1,6 @@
+DB_PORT = 4040
+DB_HOST = localhost
+DB_USER = root
+DB_PASSWORD = "GgFf19072005#@"
+DB_DATABASE = "app_flutterdb"
+SECRET = "suhdush#@h"
