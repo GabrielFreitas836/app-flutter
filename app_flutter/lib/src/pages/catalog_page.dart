@@ -43,20 +43,9 @@ class CatalogPage extends StatelessWidget {
               const SizedBox(height: 5),
               DoubleCardWidget(
                 cardText: 'Teste',
-                padding: 16
+                padding: 16,
+                numberOfCards: 10
               ),
-              DoubleCardWidget(
-                cardText: 'Teste',
-                padding: 16
-              ),
-              DoubleCardWidget(
-                cardText: 'Teste',
-                padding: 16
-              ),
-              DoubleCardWidget(
-                cardText: 'Teste',
-                padding: 16
-              )
             ]
           ),
         )
