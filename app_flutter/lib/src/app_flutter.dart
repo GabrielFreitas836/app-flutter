@@ -1,4 +1,6 @@
 import 'package:app_flutter/src/pages/catalog_page.dart';
+import 'package:app_flutter/src/pages/login_page.dart';
+import 'package:app_flutter/src/pages/signup_page.dart';
 import 'package:flutter/material.dart';
 
 class AppFlutter extends StatelessWidget {
@@ -10,7 +12,9 @@ class AppFlutter extends StatelessWidget {
       title: 'App Flutter',
       debugShowCheckedModeBanner: false,
       routes: {
-        '/': (_) => const CatalogPage()
+        '/': (_) => const LoginPage(),
+        '/signup': (_) => const SignupPage(),
+        '/catalog': (_) => const CatalogPage()
       },
     );
   }
