@@ -19,6 +19,10 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  void switchToSignupPage() {
+    Navigator.of(context).pushNamed('/signup');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,11 +57,14 @@ class _LoginPageState extends State<LoginPage> {
                 isObscure: true,
               ),
               const SizedBox(height: 16),
-              Text(
-                'Não possui conta? Cadastre-se agora!',
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500
+              GestureDetector(
+                onTap: switchToSignupPage,
+                child: Text(
+                  'Não possui conta? Cadastre-se agora!',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500
+                  ),
                 ),
               ),
               const SizedBox(height: 15.5),
