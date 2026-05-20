@@ -5,6 +5,7 @@ class MyTextFormFieldWidget extends StatelessWidget {
   final double horizontalPadding;
   final double verticalPadding;
   final String inputData;
+  final String? hintText;
   final bool isObscure;
 
   const MyTextFormFieldWidget({
@@ -12,6 +13,7 @@ class MyTextFormFieldWidget extends StatelessWidget {
     required this.horizontalPadding, 
     required this.verticalPadding,
     required this.inputData,
+    this.hintText,
     this.isObscure = false
   });
 
@@ -26,6 +28,7 @@ class MyTextFormFieldWidget extends StatelessWidget {
         obscureText: isObscure,
         decoration: InputDecoration(
           label: Text(inputData),
+          hintText: hintText,
           filled: true,
           fillColor: const Color.fromARGB(167, 255, 255, 255),
           border: OutlineInputBorder()

@@ -2,25 +2,21 @@ import 'package:app_flutter/src/widgets/my_elevated_button.dart';
 import 'package:app_flutter/src/widgets/my_text_form_field.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class OrcamentoPage extends StatefulWidget {
+  const OrcamentoPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<OrcamentoPage> createState() => _OrcamentoPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _OrcamentoPageState extends State<OrcamentoPage> {
 
-  void switchToOrcamentoPage() {
+  void switchToCatalogPage() {
     Navigator.pushNamedAndRemoveUntil(
       context, 
-      '/orcamento', 
+      '/catalog', 
       (route) => false
     );
-  }
-
-  void switchToSignupPage() {
-    Navigator.of(context).pushNamed('/signup');
   }
 
   @override
@@ -34,10 +30,10 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Padding(
+                Padding(
                 padding: const EdgeInsets.only(bottom: 45),
                 child: Text(
-                  'LOGIN',
+                  'ORÇAMENTO',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 35,
@@ -48,29 +44,13 @@ class _LoginPageState extends State<LoginPage> {
               MyTextFormFieldWidget(
                 horizontalPadding: 16, 
                 verticalPadding: 8, 
-                inputData: 'E-mail'
-              ),
-              MyTextFormFieldWidget(
-                horizontalPadding: 16, 
-                verticalPadding: 8, 
-                inputData: 'Senha',
-                isObscure: true,
+                inputData: 'Orçamento',
+                hintText: 'Defina o valor do orçamento'
               ),
               const SizedBox(height: 16),
-              GestureDetector(
-                onTap: switchToSignupPage,
-                child: Text(
-                  'Não possui conta? Cadastre-se agora!',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500
-                  ),
-                ),
-              ),
-              const SizedBox(height: 15.5),
               MyElevatedButton(
-                onPressed: switchToOrcamentoPage, 
-                buttonText: 'Logar'
+                onPressed: switchToCatalogPage,
+                buttonText: 'Salvar'
               )
             ],
           )
