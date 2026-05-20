@@ -2,8 +2,22 @@ import 'package:app_flutter/src/widgets/my_elevated_button.dart';
 import 'package:app_flutter/src/widgets/my_text_form_field.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+
+  void switchToCatalogPage() {
+    Navigator.pushNamedAndRemoveUntil(
+      context, 
+      '/catalog', 
+      (route) => false
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +62,7 @@ class LoginPage extends StatelessWidget {
               ),
               const SizedBox(height: 15.5),
               MyElevatedButton(
-                onPressed: (){}, 
+                onPressed: switchToCatalogPage, 
                 buttonText: 'Logar'
               )
             ],
