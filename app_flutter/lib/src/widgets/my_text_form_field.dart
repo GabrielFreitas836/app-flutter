@@ -26,6 +26,8 @@ class MyTextFormFieldWidget extends StatelessWidget {
         obscureText: isObscure,
         decoration: InputDecoration(
           label: Text(inputData),
+          filled: true,
+          fillColor: const Color.fromARGB(167, 255, 255, 255),
           border: OutlineInputBorder()
         ),
       ),
