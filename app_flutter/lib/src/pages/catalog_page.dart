@@ -2,6 +2,9 @@ import 'package:app_flutter/src/widgets/double_card.dart';
 import 'package:flutter/material.dart';
 
 class CatalogPage extends StatelessWidget {
+
+  final String name = 'teste';
+
   const CatalogPage({super.key});
 
   @override
@@ -27,6 +30,14 @@ class CatalogPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
+              Text(
+                'Olá, $name! Seja bem-vindo!',
+                style: TextStyle(
+                  color: const Color.fromARGB(232, 128, 128, 128),
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16,
