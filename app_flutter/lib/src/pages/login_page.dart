@@ -47,12 +47,14 @@ class _LoginPageState extends State<LoginPage> {
               ),
               MyTextFormFieldWidget(
                 horizontalPadding: 16, 
-                verticalPadding: 8, 
+                verticalPadding: 8,
+                icon: Icons.email_rounded,
                 inputData: 'E-mail'
               ),
               MyTextFormFieldWidget(
                 horizontalPadding: 16, 
-                verticalPadding: 8, 
+                verticalPadding: 8,
+                icon: Icons.lock,
                 inputData: 'Senha',
                 isObscure: true,
               ),

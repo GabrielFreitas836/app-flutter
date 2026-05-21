@@ -43,17 +43,20 @@ class _SignupPageState extends State<SignupPage> {
               ),
               MyTextFormFieldWidget(
                 horizontalPadding: 16, 
-                verticalPadding: 8, 
+                verticalPadding: 8,
+                icon: Icons.man_2_rounded,
                 inputData: 'Nome de Usuário'
               ),
               MyTextFormFieldWidget(
                 horizontalPadding: 16, 
-                verticalPadding: 8, 
+                verticalPadding: 8,
+                icon: Icons.email_rounded, 
                 inputData: 'E-mail'
               ),
               MyTextFormFieldWidget(
                 horizontalPadding: 16, 
                 verticalPadding: 8, 
+                icon: Icons.lock,
                 inputData: 'Senha',
                 isObscure: true,
               ),

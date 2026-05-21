@@ -43,7 +43,8 @@ class _OrcamentoPageState extends State<OrcamentoPage> {
               ),
               MyTextFormFieldWidget(
                 horizontalPadding: 16, 
-                verticalPadding: 8, 
+                verticalPadding: 8,
+                icon: Icons.monetization_on_rounded, 
                 inputData: 'Orçamento',
                 hintText: 'Defina o valor do orçamento'
               ),

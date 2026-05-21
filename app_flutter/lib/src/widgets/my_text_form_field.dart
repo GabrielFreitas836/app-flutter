@@ -4,6 +4,7 @@ class MyTextFormFieldWidget extends StatelessWidget {
 
   final double horizontalPadding;
   final double verticalPadding;
+  final IconData? icon;
   final String inputData;
   final String? hintText;
   final bool isObscure;
@@ -12,6 +13,7 @@ class MyTextFormFieldWidget extends StatelessWidget {
     super.key,  
     required this.horizontalPadding, 
     required this.verticalPadding,
+    this.icon,
     required this.inputData,
     this.hintText,
     this.isObscure = false
@@ -27,6 +29,7 @@ class MyTextFormFieldWidget extends StatelessWidget {
       child: TextFormField(
         obscureText: isObscure,
         decoration: InputDecoration(
+          prefixIcon: Icon(icon),
           label: Text(inputData),
           hintText: hintText,
           filled: true,
