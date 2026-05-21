@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class MyTextFormFieldWidget extends StatelessWidget {
 
@@ -8,6 +9,7 @@ class MyTextFormFieldWidget extends StatelessWidget {
   final String inputData;
   final String? hintText;
   final bool isObscure;
+  final bool isNumberType;
 
   const MyTextFormFieldWidget({
     super.key,  
@@ -16,7 +18,8 @@ class MyTextFormFieldWidget extends StatelessWidget {
     this.icon,
     required this.inputData,
     this.hintText,
-    this.isObscure = false
+    this.isObscure = false,
+    this.isNumberType = false
   });
 
   @override
@@ -28,6 +31,8 @@ class MyTextFormFieldWidget extends StatelessWidget {
         ),
       child: TextFormField(
         obscureText: isObscure,
+        keyboardType: isNumberType ? TextInputType.numberWithOptions(decimal: true) : TextInputType.text,
+        inputFormatters: isNumberType ? [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}$'))] : null,
         decoration: InputDecoration(
           prefixIcon: Icon(icon),
           label: Text(inputData),

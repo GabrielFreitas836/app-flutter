@@ -46,7 +46,8 @@ class _OrcamentoPageState extends State<OrcamentoPage> {
                 verticalPadding: 8,
                 icon: Icons.monetization_on_rounded, 
                 inputData: 'Orçamento',
-                hintText: 'Defina o valor do orçamento'
+                hintText: 'Defina o valor do orçamento',
+                isNumberType: true,
               ),
               const SizedBox(height: 16),
               MyElevatedButton(
