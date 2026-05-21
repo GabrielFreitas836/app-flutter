@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 class MyTextFormFieldWidget extends StatelessWidget {
 
+  final TextEditingController controller;
   final double horizontalPadding;
   final double verticalPadding;
   final IconData? icon;
@@ -12,8 +13,9 @@ class MyTextFormFieldWidget extends StatelessWidget {
   final bool isNumberType;
 
   const MyTextFormFieldWidget({
-    super.key,  
-    required this.horizontalPadding, 
+    super.key,
+    required this.controller,
+    required this.horizontalPadding,
     required this.verticalPadding,
     this.icon,
     required this.inputData,
@@ -30,6 +32,7 @@ class MyTextFormFieldWidget extends StatelessWidget {
           vertical: verticalPadding
         ),
       child: TextFormField(
+        controller: controller,
         obscureText: isObscure,
         keyboardType: isNumberType ? TextInputType.numberWithOptions(decimal: true) : TextInputType.text,
         inputFormatters: isNumberType ? [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}$'))] : null,

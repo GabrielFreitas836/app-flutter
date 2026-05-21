@@ -11,11 +11,14 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
 
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  
   void switchToOrcamentoPage() {
     Navigator.pushNamedAndRemoveUntil(
       context, 
       '/orcamento', 
-      (route) => false
+      (route) => false,
     );
   }
 
@@ -46,12 +49,14 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               MyTextFormFieldWidget(
+                controller: emailController,
                 horizontalPadding: 16, 
                 verticalPadding: 8,
                 icon: Icons.email_rounded,
                 inputData: 'E-mail'
               ),
               MyTextFormFieldWidget(
+                controller: passwordController,
                 horizontalPadding: 16, 
                 verticalPadding: 8,
                 icon: Icons.lock,

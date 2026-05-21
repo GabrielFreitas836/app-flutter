@@ -1,5 +1,6 @@
 import 'package:app_flutter/src/widgets/double_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CatalogPage extends StatelessWidget {
 
@@ -9,6 +10,9 @@ class CatalogPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final String orcamentoValue = ModalRoute.of(context)!.settings.arguments as String;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blueAccent,
@@ -44,6 +48,9 @@ class CatalogPage extends StatelessWidget {
                   vertical: 8
                 ),
                 child: TextField(
+                  controller: TextEditingController(text: orcamentoValue),
+                  keyboardType: TextInputType.numberWithOptions(decimal: true),
+                  inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d\.?\d{0,2}$'))],
                   decoration: InputDecoration(
                     label: Text('Orçamento'),
                     enabled: false,

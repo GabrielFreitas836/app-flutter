@@ -11,11 +11,14 @@ class OrcamentoPage extends StatefulWidget {
 
 class _OrcamentoPageState extends State<OrcamentoPage> {
 
+  final TextEditingController orcamentoController = TextEditingController();
+
   void switchToCatalogPage() {
     Navigator.pushNamedAndRemoveUntil(
       context, 
       '/catalog', 
-      (route) => false
+      (route) => false,
+      arguments: orcamentoController.text
     );
   }
 
@@ -42,6 +45,7 @@ class _OrcamentoPageState extends State<OrcamentoPage> {
                 ),
               ),
               MyTextFormFieldWidget(
+                controller: orcamentoController,
                 horizontalPadding: 16, 
                 verticalPadding: 8,
                 icon: Icons.monetization_on_rounded, 

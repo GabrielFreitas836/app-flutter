@@ -11,10 +11,14 @@ class SignupPage extends StatefulWidget {
 
 class _SignupPageState extends State<SignupPage> {
 
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
   void switchToLoginPage() {
     Navigator.pushNamedAndRemoveUntil(
       context, 
-      '/', 
+      '/',
       (route) => false
     );
   }
@@ -42,18 +46,21 @@ class _SignupPageState extends State<SignupPage> {
                 ),
               ),
               MyTextFormFieldWidget(
+                controller: nameController,
                 horizontalPadding: 16, 
                 verticalPadding: 8,
                 icon: Icons.man_2_rounded,
                 inputData: 'Nome de Usuário'
               ),
               MyTextFormFieldWidget(
+                controller: emailController,
                 horizontalPadding: 16, 
                 verticalPadding: 8,
                 icon: Icons.email_rounded, 
                 inputData: 'E-mail'
               ),
               MyTextFormFieldWidget(
+                controller: passwordController,
                 horizontalPadding: 16, 
                 verticalPadding: 8, 
                 icon: Icons.lock,
