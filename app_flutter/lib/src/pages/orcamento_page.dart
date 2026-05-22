@@ -18,7 +18,7 @@ class _OrcamentoPageState extends State<OrcamentoPage> {
       context, 
       '/catalog', 
       (route) => false,
-      arguments: orcamentoController.text
+      arguments: orcamentoController.text.isNotEmpty ? orcamentoController.text : 0.toStringAsFixed(2)
     );
   }
 
