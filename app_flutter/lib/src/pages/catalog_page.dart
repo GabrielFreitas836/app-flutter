@@ -13,22 +13,30 @@ class CatalogPage extends StatefulWidget {
 class _CatalogPageState extends State<CatalogPage> {
 
   final String name = 'teste';
-  bool isEditing = true;
+  bool isEditing = false;
   late String orcamentoValue;
+  TextEditingController orcamentoController = TextEditingController();
 
-  void editOrcamento(String text) {
-    print('Fui pressionado');
+  void canEditOrcamento() {
       setState(() {
         isEditing = !isEditing;
-        orcamentoValue = text;
-        
       });
     }
+
+  void setNewOrcamento(String newText) {
+    setState(() {
+      orcamentoController.text = newText;
+      print(newText);
+      print(orcamentoController.text);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
 
     orcamentoValue = ModalRoute.of(context)!.settings.arguments as String;
+
+    orcamentoController.text = orcamentoValue;
 
     return Scaffold(
       appBar: AppBar(
@@ -68,9 +76,10 @@ class _CatalogPageState extends State<CatalogPage> {
                 child: Stack(
                   children: [ 
                     TextField(
-                      controller: TextEditingController(text: orcamentoValue),
+                      controller: orcamentoController,
                       keyboardType: TextInputType.numberWithOptions(decimal: true),
                       inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}$'))],
+                      onSubmitted: setNewOrcamento,
                       decoration: InputDecoration(
                         prefixIcon: Icon(Icons.monetization_on_rounded),
                         suffix: SizedBox(
@@ -89,7 +98,7 @@ class _CatalogPageState extends State<CatalogPage> {
                         Padding(
                           padding: const EdgeInsets.only(top: 10),
                           child: ElevatedButton(
-                            onPressed: () => editOrcamento(orcamentoValue),
+                            onPressed: canEditOrcamento,
                             style: ElevatedButton.styleFrom(
                               shape: const CircleBorder(),
                               backgroundColor: Colors.white,
