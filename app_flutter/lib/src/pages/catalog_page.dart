@@ -13,8 +13,11 @@ class CatalogPage extends StatefulWidget {
 class _CatalogPageState extends State<CatalogPage> {
 
   final String name = 'teste';
+  int nCards = 10;
   bool isEditing = false;
+  bool wasSetted = false;
   late String orcamentoValue;
+  late String newOrcamento;
   TextEditingController orcamentoController = TextEditingController();
 
   void canEditOrcamento() {
@@ -25,9 +28,23 @@ class _CatalogPageState extends State<CatalogPage> {
 
   void setNewOrcamento(String newText) {
     setState(() {
-      orcamentoController.text = newText;
-      print(newText);
-      print(orcamentoController.text);
+      newOrcamento = newText;
+      orcamentoController.text = newOrcamento;
+      wasSetted = true;
+    });
+  }
+
+  void newCard() {
+    setState(() {
+      nCards++;
+    });
+  }
+
+  void removeCard() {
+    setState(() {
+      if (nCards > 1) {
+        nCards--;
+      }
     });
   }
 
@@ -36,7 +53,13 @@ class _CatalogPageState extends State<CatalogPage> {
 
     orcamentoValue = ModalRoute.of(context)!.settings.arguments as String;
 
-    orcamentoController.text = orcamentoValue;
+    if (wasSetted){
+      orcamentoController.text = newOrcamento;
+    } 
+    else {
+      orcamentoController.text = orcamentoValue;
+      newOrcamento = orcamentoValue;
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -79,6 +102,7 @@ class _CatalogPageState extends State<CatalogPage> {
                       controller: orcamentoController,
                       keyboardType: TextInputType.numberWithOptions(decimal: true),
                       inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}$'))],
+                      onChanged: setNewOrcamento,
                       onSubmitted: setNewOrcamento,
                       decoration: InputDecoration(
                         prefixIcon: Icon(Icons.monetization_on_rounded),
@@ -118,7 +142,43 @@ class _CatalogPageState extends State<CatalogPage> {
               DoubleCardWidget(
                 cardText: 'Teste',
                 padding: 16,
-                numberOfCards: 10
+                numberOfCards: nCards
+              ),
+              const SizedBox(height: 7),
+              Wrap(
+                spacing: 16,
+                runSpacing: 16,
+                alignment: WrapAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 150,
+                    height: 150,
+                    child: GestureDetector(
+                      onTap: newCard,
+                      child: Card(
+                        color: const Color.fromARGB(255, 243, 243, 243),
+                        elevation: 5,
+                        child: Center(
+                          child: Icon(Icons.add)
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 150,
+                    height: 150,
+                    child: GestureDetector(
+                      onTap: removeCard,
+                      child: Card(
+                        color: const Color.fromARGB(255, 243, 243, 243),
+                        elevation: 5,
+                        child: Center(
+                          child: Icon(Icons.remove)
+                        ),
+                      ),
+                    ),
+                  ),
+                ] 
               ),
             ]
           ),
