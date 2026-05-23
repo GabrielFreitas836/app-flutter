@@ -12,7 +12,7 @@ router.get('/products', authUser, productController.listAllProducts);
 router.put('/orcamento/:userId', authUser, userController.RevampOrcamento);
 
 router.post('/products/newProduct', authUser, productController.insertProduct);
-router.post('/users/newUser', userController.singupUser);
+router.post('/users/newUser', userController.signupUser);
 router.post('/users/login', userController.loginUser);
 
 router.delete('/products/:productId', authUser, productController.deleteProduct);

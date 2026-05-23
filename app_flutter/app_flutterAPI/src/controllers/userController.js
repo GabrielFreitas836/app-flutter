@@ -49,7 +49,7 @@ class UserController {
         }
     }
 
-    async singupUser(req, res) {
+    async signupUser(req, res) {
         
         let { nome, email, senha } = req.body;
 
