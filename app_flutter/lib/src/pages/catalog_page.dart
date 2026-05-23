@@ -140,8 +140,8 @@ class _CatalogPageState extends State<CatalogPage> {
               ),
               const SizedBox(height: 5),
               DoubleCardWidget(
-                cardText: 'Teste',
-                padding: 16,
+                cardTexts: ['Descrição', 'Valor Unitário: ???', 'Tipo Unidade: ???', 'Categoria: ???'],
+                padding: 20,
                 numberOfCards: nCards
               ),
               const SizedBox(height: 7),
