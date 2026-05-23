@@ -29,7 +29,7 @@ class User {
     }
 
     async getUserByCredentials(email, password) {
-        let user = await knex('usuario').select(["idUsuario", "email", "senha"])
+        let user = await knex('usuario').select(["idUsuario", "nome", "email", "senha"])
         .where({'email': email, 'senha': password}).first();
 
         return user;
