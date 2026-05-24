@@ -9,7 +9,8 @@ class ProductService {
   final AuthToken authToken = AuthToken();
 
   Future<List<ProductModel>> getAllProducts() async {
-    final token = await authToken.getToken();
+    // final token = await authToken.getToken();
+    final token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzdWFyaW8iOjEsImlhdCI6MTc3OTY1MjUwMywiZXhwIjoxNzgwMjU3MzAzfQ.d62mCMEZcfRoTjHE5A137pMO2C4S7dY3aR4oTu1fRzg';
 
     try {
        final response = await http.get(
@@ -20,18 +21,17 @@ class ProductService {
         }
       );
 
-      final data = jsonDecode(response.body);
-
       if (response.statusCode == 200) {
 
-        return List<ProductModel>.from((data as List).map((item) => ProductModel.fromJson(item)));
+        final Map<String, dynamic> data = jsonDecode(response.body);
+        return (data['values'] as List).map((product) => ProductModel.fromJson(product)).toList();
       }
       else if (response.statusCode == 401) {
         authToken.removeToken();
-        throw Exception(data['message'] ?? 'Token inválido ou expirado');
+        throw Exception('Token inválido ou expirado');
       }
       else {
-        throw Exception(data['message'] ?? 'Erro ao buscar produtos');
+        throw Exception('Erro ao buscar produtos');
       }
     } catch (e) {
       rethrow;

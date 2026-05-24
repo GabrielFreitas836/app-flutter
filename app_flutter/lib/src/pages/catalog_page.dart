@@ -47,7 +47,7 @@ class _CatalogPageState extends State<CatalogPage> {
       }
     });
   }
-
+  
   @override
   Widget build(BuildContext context) {
 
@@ -140,9 +140,7 @@ class _CatalogPageState extends State<CatalogPage> {
               ),
               const SizedBox(height: 5),
               DoubleCardWidget(
-                cardTexts: ['Descrição', 'Valor Unitário: ???', 'Tipo Unidade: ???', 'Categoria: ???'],
-                padding: 20,
-                numberOfCards: nCards
+                padding: 20
               ),
               const SizedBox(height: 7),
               Wrap(

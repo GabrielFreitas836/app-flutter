@@ -1,75 +1,98 @@
+import 'package:app_flutter/src/providers/product_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class DoubleCardWidget extends StatelessWidget {
+class DoubleCardWidget extends StatefulWidget {
 
-  final List<String> cardTexts;
   final double padding;
-  final int cardsPerRow = 2;
-  final int numberOfCards;
 
   const DoubleCardWidget({
     super.key, 
-    required this.cardTexts, 
-    required this.padding,
-    this.numberOfCards = 1
+    required this.padding
   });
 
   @override
+  State<DoubleCardWidget> createState() => _DoubleCardWidgetState();
+}
+
+class _DoubleCardWidgetState extends State<DoubleCardWidget> {
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future.microtask(() {
+      if(!mounted) return;
+      
+      context.read<ProductProvider>().fetchProducts();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+
+    final productProvider = context.watch<ProductProvider>();
+
     return Wrap(
-      spacing: padding,
-      runSpacing: padding,
-      children: List.generate(numberOfCards, (index) {
+      spacing: widget.padding,
+      runSpacing: widget.padding,
+      children: List.generate(productProvider.products.length, (index) {
         return SizedBox(
           width: 180,
-          height: 210,
           child: Card(
             color: const Color.fromARGB(255, 243, 243, 243),
             elevation: 5,
             child: Flex(
               direction: Axis.vertical,
               mainAxisAlignment: MainAxisAlignment.center,
-              spacing: padding,
+              spacing: widget.padding,
               children: [
                 Text(
-                  cardTexts[0],
+                  productProvider.products[index].description,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 22
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold
                   ),
                 ),
                 Text(
-                  cardTexts[1],
+                  'R\$ ${productProvider.products[index].unitValue.toStringAsFixed(2)}',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 10
+                  style: const TextStyle(
+                    fontSize:  11,
+                    fontWeight: FontWeight.bold
                   ),
                 ),
                 Text(
-                  cardTexts[2],
+                  productProvider.products[index].unitType,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 10
+                  style: const TextStyle(
+                    fontSize:  11,
+                    fontWeight: FontWeight.bold
                   ),
                 ),
                 Text(
-                  cardTexts[3],
+                  'Cat: ${productProvider.products[index].category}',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 13
+                  style: const TextStyle(
+                    fontSize:  15,
+                    fontWeight: FontWeight.bold
                   ),
                 ),
-                Badge(
-                  backgroundColor: Colors.blueGrey,
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 5
-                  ),
-                  label: Text(
-                    'Badge',
-                    style: TextStyle(
-                      fontSize: 11,
-                      letterSpacing: 1.25
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Badge(
+                    backgroundColor: Colors.blueGrey,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 5
+                    ),
+                    label: Text(
+                      'Badge',
+                      style: TextStyle(
+                        fontSize: 11,
+                        letterSpacing: 1.25
+                      ),
                     ),
                   ),
                 )
