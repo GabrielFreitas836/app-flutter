@@ -8,7 +8,7 @@ class Token {
 
         if(userId !== undefined)
         {
-            const token = jwt.sign({ idUsuario: userId}, process.env.SECRET, {expiresIn: '7d'});
+            const token = jwt.sign({ idUsuario: userId }, process.env.SECRET, {expiresIn: '7d'});
             return token;
         }
         else 
