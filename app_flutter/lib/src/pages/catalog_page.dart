@@ -121,6 +121,51 @@ class _CatalogPageState extends State<CatalogPage> {
       );
     });
   }
+
+  void RemoveCard() {
+    setState(() {
+        showDialog (
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text(
+                'Excluir Produto',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold
+                ),
+              ),
+              content: const Text(
+                'Tem certeza que deseja excluir este produto?',
+                textAlign: TextAlign.center,
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Cancelar'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    // Lógica para excluir o produto
+                    Navigator.of(context).pop();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Produto excluído com sucesso!'),
+                        duration: Duration(seconds: 3),
+                      )
+                    );
+                  },
+                  child: const Text('Excluir'),
+                ),
+              ],
+            );
+          }
+        );
+    });
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -214,7 +259,8 @@ class _CatalogPageState extends State<CatalogPage> {
               ),
               const SizedBox(height: 5),
               DoubleCardWidget(
-                padding: 20
+                padding: 20,
+                onTap: RemoveCard,
               ),
               const SizedBox(height: 7),
               Wrap(

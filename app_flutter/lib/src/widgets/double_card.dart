@@ -5,10 +5,12 @@ import 'package:provider/provider.dart';
 class DoubleCardWidget extends StatefulWidget {
 
   final double padding;
+  final void Function()? onTap;
 
   const DoubleCardWidget({
     super.key, 
-    required this.padding
+    required this.padding, 
+    required this.onTap
   });
 
   @override
@@ -47,13 +49,25 @@ class _DoubleCardWidgetState extends State<DoubleCardWidget> {
               mainAxisAlignment: MainAxisAlignment.center,
               spacing: widget.padding,
               children: [
-                Text(
-                  productProvider.products[index].description,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold
-                  ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        productProvider.products[index].description,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontSize: 21.5,
+                          fontWeight: FontWeight.bold
+                        ),
+                        softWrap: true,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: widget.onTap,
+                      icon: const Icon(Icons.delete),
+                      iconSize: 18,
+                    )
+                  ],
                 ),
                 Text(
                   'R\$ ${productProvider.products[index].unitValue.toStringAsFixed(2)}',
