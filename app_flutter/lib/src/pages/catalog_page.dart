@@ -13,7 +13,6 @@ class CatalogPage extends StatefulWidget {
 class _CatalogPageState extends State<CatalogPage> {
 
   final String name = 'teste';
-  int nCards = 10;
   bool isEditing = false;
   bool wasSetted = false;
   late String orcamentoValue;
@@ -36,15 +35,90 @@ class _CatalogPageState extends State<CatalogPage> {
 
   void newCard() {
     setState(() {
-      nCards++;
-    });
-  }
-
-  void removeCard() {
-    setState(() {
-      if (nCards > 1) {
-        nCards--;
-      }
+      showDialog (
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text(
+              'Adicionar Novo Produto',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold
+              ),
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      label: const Text('Descrição'),
+                      border: OutlineInputBorder()
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    keyboardType: TextInputType.numberWithOptions(decimal: true),
+                    inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}$'))],
+                    decoration: InputDecoration(
+                      label: const Text('Valor Unitário'),
+                      border: OutlineInputBorder()
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      label: const Text('Tipo de Unidade'),
+                      border: OutlineInputBorder()
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      label: const Text('Categoria'),
+                      border: OutlineInputBorder()
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Cancelar'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  // Lógica para adicionar o novo produto
+                  Navigator.of(context).pop();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Produto adicionado com sucesso!'),
+                      duration: Duration(seconds: 3),
+                    )
+                  );
+                },
+                child: const Text('Adicionar'),
+              ),
+            ],
+          );
+        }
+      );
     });
   }
   
@@ -149,7 +223,7 @@ class _CatalogPageState extends State<CatalogPage> {
                 alignment: WrapAlignment.center,
                 children: [
                   SizedBox(
-                    width: 150,
+                    width: 280,
                     height: 150,
                     child: GestureDetector(
                       onTap: newCard,
@@ -158,20 +232,6 @@ class _CatalogPageState extends State<CatalogPage> {
                         elevation: 5,
                         child: Center(
                           child: Icon(Icons.add)
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 150,
-                    height: 150,
-                    child: GestureDetector(
-                      onTap: removeCard,
-                      child: Card(
-                        color: const Color.fromARGB(255, 243, 243, 243),
-                        elevation: 5,
-                        child: Center(
-                          child: Icon(Icons.remove)
                         ),
                       ),
                     ),
