@@ -1,6 +1,8 @@
+import 'package:app_flutter/src/providers/user_provider.dart';
 import 'package:app_flutter/src/widgets/my_elevated_button.dart';
 import 'package:app_flutter/src/widgets/my_text_form_field.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -13,12 +15,23 @@ class _LoginPageState extends State<LoginPage> {
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  bool canAuthenticate = false;
   
-  void switchToOrcamentoPage() {
+  @override
+  void initState() {
+    super.initState();
+
+    Future.microtask(() {
+      if (!mounted) return;
+      context.read<UserProvider>().login(emailController.text, passwordController.text);
+    });
+  }
+  void switchToOrcamentoPage(String token) {
     Navigator.pushNamedAndRemoveUntil(
       context, 
       '/orcamento', 
       (route) => false,
+      arguments: token
     );
   }
 
@@ -27,7 +40,21 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+
+    final userProvider = context.watch<UserProvider>();
+
+    if (userProvider.data['success'] == true) {
+      canAuthenticate = true;
+    }
+
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -76,7 +103,18 @@ class _LoginPageState extends State<LoginPage> {
               ),
               const SizedBox(height: 15.5),
               MyElevatedButton(
-                onPressed: switchToOrcamentoPage, 
+                onPressed: () {
+                  if (canAuthenticate) {
+                    switchToOrcamentoPage(userProvider.data['token']);
+                  }
+                  else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(userProvider.data['message'] as String? ?? 'Falha ao realizar login'),
+                      ),
+                    );
+                  }
+                }, 
                 buttonText: 'Logar'
               )
             ],

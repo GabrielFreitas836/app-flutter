@@ -3,6 +3,7 @@ import 'package:app_flutter/src/pages/login_page.dart';
 import 'package:app_flutter/src/pages/orcamento_page.dart';
 import 'package:app_flutter/src/pages/signup_page.dart';
 import 'package:app_flutter/src/providers/product_provider.dart';
+import 'package:app_flutter/src/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,6 +15,7 @@ class AppFlutter extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ProductProvider()),
+        ChangeNotifierProvider(create: (_) => UserProvider()),
       ],
       child: MaterialApp(
         title: 'App Flutter',
