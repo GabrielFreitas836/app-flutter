@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 
 class UserProvider extends ChangeNotifier {
   final UserService _userService = UserService();
-  late final Map<String, dynamic> data;
+  Map<String, dynamic>? data;
 
   Future<Map<String, dynamic>> login(String email, String password) async {
     try {
@@ -18,7 +18,7 @@ class UserProvider extends ChangeNotifier {
       );
       
       notifyListeners();
-      return data;
+      return data!;
     } catch (e) {
       rethrow;
     }

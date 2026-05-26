@@ -122,7 +122,7 @@ class _CatalogPageState extends State<CatalogPage> {
     });
   }
 
-  void RemoveCard() {
+  void removeCard() {
     setState(() {
         showDialog (
           context: context,
@@ -260,7 +260,7 @@ class _CatalogPageState extends State<CatalogPage> {
               const SizedBox(height: 5),
               DoubleCardWidget(
                 padding: 20,
-                onTap: RemoveCard,
+                onTap: removeCard,
               ),
               const SizedBox(height: 7),
               Wrap(

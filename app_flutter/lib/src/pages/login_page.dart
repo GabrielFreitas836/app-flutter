@@ -17,21 +17,11 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController passwordController = TextEditingController();
   bool canAuthenticate = false;
   
-  @override
-  void initState() {
-    super.initState();
-
-    Future.microtask(() {
-      if (!mounted) return;
-      context.read<UserProvider>().login(emailController.text, passwordController.text);
-    });
-  }
   void switchToOrcamentoPage(String token) {
     Navigator.pushNamedAndRemoveUntil(
       context, 
       '/orcamento', 
-      (route) => false,
-      arguments: token
+      (route) => false
     );
   }
 
@@ -51,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
 
     final userProvider = context.watch<UserProvider>();
 
-    if (userProvider.data['success'] == true) {
+    if (userProvider.data?['success'] == true) {
       canAuthenticate = true;
     }
 
@@ -103,21 +93,48 @@ class _LoginPageState extends State<LoginPage> {
               ),
               const SizedBox(height: 15.5),
               MyElevatedButton(
-                onPressed: () {
-                  if (canAuthenticate) {
-                    switchToOrcamentoPage(userProvider.data['token']);
-                  }
-                  else {
+                onPressed: () async {
+                  try {
+                    final messenger = ScaffoldMessenger.of(context);
+                    
+                    final result = await context.read<UserProvider>().login(
+                      emailController.text,
+                      passwordController.text,
+                    );
+                    
+                    if (!mounted) return;
+                    
+                    if (result['success'] == true) {
+                      messenger.showSnackBar(
+                        SnackBar(
+                          content: Text(result['message'] as String? ?? 'Login realizado com sucesso!'),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                      switchToOrcamentoPage(result['token']);
+                      return;
+                    }
+                    
+                    messenger.showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          result['message'] as String? ??
+                          'Falha ao realizar login!',
+                        ),
+                      ),
+                    );
+                  } catch (e) {
+                    if (!mounted) return;
+
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text(userProvider.data['message'] as String? ?? 'Falha ao realizar login'),
+                        content: Text('Erro: $e'),
                       ),
                     );
                   }
-                }, 
-                buttonText: 'Logar'
+                }, buttonText: 'Logar',
               )
-            ],
+            ]
           )
         ),
       ),

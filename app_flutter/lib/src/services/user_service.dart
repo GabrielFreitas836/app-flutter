@@ -16,7 +16,7 @@ class UserService {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: jsonEncode({user.toJson()})
+        body: jsonEncode((user.toJson()))
       );
 
       if (response.statusCode == 200) {
@@ -27,7 +27,8 @@ class UserService {
         return data;
       }
       else {
-        throw Exception('Falha ao realizar login');
+        final Map<String, dynamic> data = jsonDecode(response.body);
+        throw Exception(data['message'] as String? ?? 'Falha ao realizar login');
       }
     } catch (e) {
       rethrow;
