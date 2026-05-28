@@ -84,7 +84,7 @@ class UserController {
 
             if (result.validated && !result.isBadRequest)
             {
-                res.status(200).json({success: true, message: result.message, token: result.token});
+                res.status(200).json({success: true, message: result.message, userName: result.userName, token: result.token});
             }
             else if (!result.validated && !result.isBadRequest)
             {

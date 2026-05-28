@@ -96,7 +96,7 @@ class UserService {
                 if (getUser !== undefined)
                 {
                     let auth_token = token.generateToken(getUser.idUsuario);
-                    return {validated: true, isBadRequest: false, message: "Usuário logado com sucesso!", token: auth_token};
+                    return {validated: true, isBadRequest: false, message: "Usuário logado com sucesso!", userName: getUser.nome, token: auth_token};
                 }
                 else 
                 {

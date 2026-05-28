@@ -16,9 +16,8 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   
-  void switchToOrcamentoPage(String token) {
+  void switchToOrcamentoPage(String token, String? userName) {
 
-    final userName = ModalRoute.of(context)?.settings.arguments as String?;
 
     Navigator.pushNamedAndRemoveUntil(
       context,
@@ -108,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                           duration: Duration(seconds: 2),
                         ),
                       );
-                      switchToOrcamentoPage(result['token']);
+                      switchToOrcamentoPage(result['token'], result['userName']);
                       return;
                     }
                     
