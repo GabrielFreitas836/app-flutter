@@ -13,7 +13,6 @@ class UserProvider extends ChangeNotifier {
     try {
       data = await _userService.login(
         UserModel(
-          id: '',
           name: '',
           email: email,
           password: password,
@@ -31,7 +30,6 @@ class UserProvider extends ChangeNotifier {
     try {
       data = await _userService.register(
         UserModel(
-          id: '',
           name: name,
           email: email,
           password: password,
@@ -39,7 +37,6 @@ class UserProvider extends ChangeNotifier {
       );
       
       _users.add(UserModel(
-        id: data!['id'] as String,
         name: name,
         email: email,
         password: password,

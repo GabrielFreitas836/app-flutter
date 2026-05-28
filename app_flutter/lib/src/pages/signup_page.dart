@@ -21,8 +21,17 @@ class _SignupPageState extends State<SignupPage> {
     Navigator.pushNamedAndRemoveUntil(
       context, 
       '/',
-      (route) => false
+      (route) => false,
+      arguments: nameController.text,
     );
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 
   @override

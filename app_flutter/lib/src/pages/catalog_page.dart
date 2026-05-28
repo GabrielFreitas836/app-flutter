@@ -12,7 +12,6 @@ class CatalogPage extends StatefulWidget {
 
 class _CatalogPageState extends State<CatalogPage> {
 
-  final String name = 'teste';
   bool isEditing = false;
   bool wasSetted = false;
   late String orcamentoValue;
@@ -170,14 +169,14 @@ class _CatalogPageState extends State<CatalogPage> {
   @override
   Widget build(BuildContext context) {
 
-    orcamentoValue = ModalRoute.of(context)!.settings.arguments as String;
-
+    final args = ModalRoute.of(context)!.settings.arguments as Map<String, String>;
+    
     if (wasSetted){
       orcamentoController.text = newOrcamento;
     } 
     else {
-      orcamentoController.text = orcamentoValue;
-      newOrcamento = orcamentoValue;
+      orcamentoController.text = args['orcamento']!;
+      newOrcamento = args['orcamento']!;
     }
 
     return Scaffold(
@@ -202,7 +201,7 @@ class _CatalogPageState extends State<CatalogPage> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Text(
-                'Olá, $name! Seja bem-vindo!',
+                'Olá, ${args['userName']}! Seja bem-vindo!',
                 style: TextStyle(
                   color: const Color.fromARGB(232, 128, 128, 128),
                   fontSize: 20,

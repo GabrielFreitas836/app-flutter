@@ -17,10 +17,14 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController passwordController = TextEditingController();
   
   void switchToOrcamentoPage(String token) {
+
+    final userName = ModalRoute.of(context)?.settings.arguments as String?;
+
     Navigator.pushNamedAndRemoveUntil(
-      context, 
-      '/orcamento', 
-      (route) => false
+      context,
+      '/orcamento',
+      (route) => false,
+      arguments: (userName != null && userName.isNotEmpty) ? userName : 'Usuário',
     );
   }
 

@@ -14,11 +14,17 @@ class _OrcamentoPageState extends State<OrcamentoPage> {
   final TextEditingController orcamentoController = TextEditingController();
 
   void switchToCatalogPage() {
+
+    final userName = ModalRoute.of(context)?.settings.arguments as String?;
+
     Navigator.pushNamedAndRemoveUntil(
       context, 
       '/catalog', 
       (route) => false,
-      arguments: orcamentoController.text.isNotEmpty ? orcamentoController.text : 0.toStringAsFixed(2)
+      arguments: {
+        'orcamento': orcamentoController.text.isNotEmpty ? orcamentoController.text : 0.toStringAsFixed(2),
+        'userName': (userName != null && userName.isNotEmpty) ? userName : 'Usuário'
+      }
     );
   }
 
