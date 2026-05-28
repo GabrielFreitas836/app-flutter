@@ -60,7 +60,7 @@ class UserService {
     async newUser(name, email, password) {
 
         try {
-            if (name == null || email == null || password == null)
+            if (name == '' || email == '' || password == '')
             {
                 return {validated: false, isBadRequest: true, message: "Preencha os campos vazios!"};
             }
@@ -85,7 +85,7 @@ class UserService {
     async getUserByCredentials(email, password) {
 
         try {
-            if (email == null || password == null)
+            if (email == '' || password == '')
             {
                 return {validated: false, isBadRequest: true, message: "Preencha os campos vazios!"};
             }
