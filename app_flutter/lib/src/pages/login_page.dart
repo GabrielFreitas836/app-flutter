@@ -125,7 +125,7 @@ class _LoginPageState extends State<LoginPage> {
 
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('Erro: $e'),
+                        content: Text('Erro: ${e.toString().split(":").last}'),
                       ),
                     );
                   }

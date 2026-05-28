@@ -1,6 +1,9 @@
+import 'package:app_flutter/src/models/product_model_a.dart';
+import 'package:app_flutter/src/providers/product_provider.dart';
 import 'package:app_flutter/src/widgets/double_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 class CatalogPage extends StatefulWidget {
 
@@ -18,6 +21,11 @@ class _CatalogPageState extends State<CatalogPage> {
   late String newOrcamento;
   TextEditingController orcamentoController = TextEditingController();
 
+  TextEditingController descriptionController = TextEditingController();
+  TextEditingController unitValueController = TextEditingController();
+  TextEditingController unitTypeController = TextEditingController();
+  TextEditingController categoryController = TextEditingController();
+
   void canEditOrcamento() {
       setState(() {
         isEditing = !isEditing;
@@ -32,7 +40,7 @@ class _CatalogPageState extends State<CatalogPage> {
     });
   }
 
-  void newCard() {
+  void newCard(ProductProvider productProvider) {
     setState(() {
       showDialog (
         context: context,
@@ -53,6 +61,7 @@ class _CatalogPageState extends State<CatalogPage> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextField(
+                    controller: descriptionController,
                     decoration: InputDecoration(
                       label: const Text('Descrição'),
                       border: OutlineInputBorder()
@@ -63,6 +72,7 @@ class _CatalogPageState extends State<CatalogPage> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextField(
+                    controller: unitValueController,
                     keyboardType: TextInputType.numberWithOptions(decimal: true),
                     inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}$'))],
                     decoration: InputDecoration(
@@ -75,6 +85,7 @@ class _CatalogPageState extends State<CatalogPage> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextField(
+                    controller: unitTypeController,
                     decoration: InputDecoration(
                       label: const Text('Tipo de Unidade'),
                       border: OutlineInputBorder()
@@ -85,6 +96,7 @@ class _CatalogPageState extends State<CatalogPage> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextField(
+                    controller: categoryController,
                     decoration: InputDecoration(
                       label: const Text('Categoria'),
                       border: OutlineInputBorder()
@@ -102,15 +114,43 @@ class _CatalogPageState extends State<CatalogPage> {
                 child: const Text('Cancelar'),
               ),
               ElevatedButton(
-                onPressed: () {
-                  // Lógica para adicionar o novo produto
-                  Navigator.of(context).pop();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Produto adicionado com sucesso!'),
-                      duration: Duration(seconds: 3),
-                    )
-                  );
+                onPressed: () async {
+                   try {
+                    if (!mounted) return;
+
+                    final result = await context.read<ProductProvider>().addProduct(
+                      ProductModelA(
+                        description: descriptionController.text,
+                        unitValue: double.parse(unitValueController.text),
+                        unitType: unitTypeController.text,
+                        category: categoryController.text
+                      )
+                    );
+
+                    if (result['success'] == true) {
+                      Navigator.of(context).pop();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(result['message'] ?? 'Produto adicionado com sucesso!'),
+                          duration: const Duration(seconds: 3),
+                        )
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Erro: ${result['message'] ?? 'Falha ao adicionar o produto!'}'),
+                          duration: const Duration(seconds: 3),
+                        )
+                      );
+                    }
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Erro: ${e.toString().split(":").last}'),
+                        duration: const Duration(seconds: 3),
+                      )
+                    );
+                  }
                 },
                 child: const Text('Adicionar'),
               ),
@@ -169,6 +209,8 @@ class _CatalogPageState extends State<CatalogPage> {
   @override
   Widget build(BuildContext context) {
 
+    final productProvider = context.watch<ProductProvider>();
+    
     final args = ModalRoute.of(context)!.settings.arguments as Map<String, String>;
     
     if (wasSetted){
@@ -271,7 +313,7 @@ class _CatalogPageState extends State<CatalogPage> {
                     width: 280,
                     height: 150,
                     child: GestureDetector(
-                      onTap: newCard,
+                      onTap: () => newCard(productProvider),
                       child: Card(
                         color: const Color.fromARGB(255, 243, 243, 243),
                         elevation: 5,

@@ -117,7 +117,7 @@ class _SignupPageState extends State<SignupPage> {
 
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('Erro: $e'),
+                        content: Text('Erro: ${e.toString().split(":").last}.'),
                         duration: Duration(seconds: 2),
                       )
                     );

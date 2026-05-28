@@ -1,18 +1,18 @@
-class ProductModel {
+class ProductModelA {
   final String description;
   final double unitValue;
   final String unitType;
   final String category;
 
-  ProductModel({
+  ProductModelA({
     required this.description, 
     required this.unitValue, 
     required this.unitType,
     required this.category
   });
 
-  factory ProductModel.fromJson(Map<String, dynamic> json) {
-    return ProductModel(
+  factory ProductModelA.fromJson(Map<String, dynamic> json) {
+    return ProductModelA(
       description: json['produto'],
       unitValue: double.parse(json['valor_unitario'].toString()),
       unitType: json['tipo_unidade'],
