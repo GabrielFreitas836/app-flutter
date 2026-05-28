@@ -1,6 +1,8 @@
+import 'package:app_flutter/src/providers/user_provider.dart';
 import 'package:app_flutter/src/widgets/my_elevated_button.dart';
 import 'package:app_flutter/src/widgets/my_text_form_field.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -69,7 +71,49 @@ class _SignupPageState extends State<SignupPage> {
               ),
               const SizedBox(height: 16),
               MyElevatedButton(
-                onPressed: switchToLoginPage, 
+                onPressed: () async {
+                  try {
+                    final messager = ScaffoldMessenger.of(context);
+
+                    final result = await context.read<UserProvider>().register(
+                      nameController.text, 
+                      emailController.text, 
+                      passwordController.text
+                    );
+
+                    if (!mounted) return;
+
+                    if (result['success'] == true) {
+                      messager.showSnackBar(
+                        SnackBar(
+                          content: Text(result['message'] as String? ?? 'Cadastro realizado com sucesso!'),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                    }
+                    else {
+                      messager.showSnackBar(
+                        SnackBar(
+                          content: Text(result['message'] as String? ?? 'Falha ao realizar cadastro!'),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                    }
+
+                    
+                    switchToLoginPage();
+                  } catch (e) {
+                    if (!mounted) return;
+
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Erro: $e'),
+                        duration: Duration(seconds: 2),
+                      )
+                    );
+                  }
+                }, 
                 buttonText: 'Cadastrar'
               )
             ],

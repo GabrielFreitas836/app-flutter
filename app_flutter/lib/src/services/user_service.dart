@@ -34,4 +34,28 @@ class UserService {
       rethrow;
     }
   }
+
+  Future<Map<String, dynamic>> register(UserModel user) async {
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/users/newUser'),
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: jsonEncode((user.toJson()))
+      );
+
+      if (response.statusCode == 201) {
+
+        final Map<String, dynamic> data = jsonDecode(response.body);
+        return data;
+      }
+      else {
+        final Map<String, dynamic> data = jsonDecode(response.body);
+        throw Exception(data['message'] as String? ?? 'Falha ao realizar cadastro');
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

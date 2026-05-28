@@ -15,7 +15,6 @@ class _LoginPageState extends State<LoginPage> {
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  bool canAuthenticate = false;
   
   void switchToOrcamentoPage(String token) {
     Navigator.pushNamedAndRemoveUntil(
@@ -38,12 +37,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-
-    final userProvider = context.watch<UserProvider>();
-
-    if (userProvider.data?['success'] == true) {
-      canAuthenticate = true;
-    }
 
     return Scaffold(
       body: Container(
