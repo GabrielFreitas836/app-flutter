@@ -61,7 +61,7 @@ class ProductServiceB {
         await authToken.removeToken();
         throw Exception(
           data['message'] ??
-              'Token invalido ou expirado. Faca login novamente.',
+              'Token inválido ou expirado. Faça login novamente.',
         );
       } else {
         final Map<String, dynamic> data = jsonDecode(response.body);

@@ -84,7 +84,7 @@ class UserService {
         await authToken.removeToken();
         throw Exception(
           data['message'] ??
-              'Token invalido ou expirado. Faca login novamente.',
+              'Token inválido ou expirado. Faça login novamente.',
         );
       } else {
         throw Exception(data['message'] ?? 'Erro ao atualizar orcamento');

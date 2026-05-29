@@ -26,7 +26,7 @@ class AuthToken {
     final tokenParts = token.split('.');
 
     if (tokenParts.length != 3) {
-      throw Exception('Token invalido. Faca login novamente.');
+      throw Exception('Token inválido. Faça login novamente.');
     }
 
     final payload = utf8.decode(
