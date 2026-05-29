@@ -98,7 +98,7 @@ class _DoubleCardWidgetState extends State<DoubleCardWidget> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 10),
                   child: Badge(
-                    backgroundColor: Colors.blueGrey,
+                    backgroundColor: const Color.fromARGB(255, 145, 174, 189),
                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     label: widget.cardLabelBuilder != null
                       ? widget.cardLabelBuilder!(productProvider.products[index], index)
