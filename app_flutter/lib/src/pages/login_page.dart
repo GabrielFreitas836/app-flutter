@@ -123,6 +123,8 @@ class _LoginPageState extends State<LoginPage> {
                         content: Text('Erro: ${e.toString().split(":").last}'),
                       ),
                     );
+
+                    print(e);
                   }
                 },
                 buttonText: 'Logar',
