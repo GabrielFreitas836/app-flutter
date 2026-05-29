@@ -1,12 +1,12 @@
-import 'package:app_flutter/src/models/product_model_a.dart';
+import 'package:app_flutter/src/models/product_model_b.dart';
 import 'package:app_flutter/src/providers/product_provider.dart';
+import 'package:app_flutter/src/providers/user_provider.dart';
 import 'package:app_flutter/src/widgets/double_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class CatalogPage extends StatefulWidget {
-
   const CatalogPage({super.key});
 
   @override
@@ -14,45 +14,87 @@ class CatalogPage extends StatefulWidget {
 }
 
 class _CatalogPageState extends State<CatalogPage> {
-
   bool isEditing = false;
   bool wasSetted = false;
-  late String orcamentoValue;
-  late String newOrcamento;
-  TextEditingController orcamentoController = TextEditingController();
+  String newOrcamento = '0.00';
+  final TextEditingController orcamentoController = TextEditingController();
 
-  TextEditingController descriptionController = TextEditingController();
-  TextEditingController unitValueController = TextEditingController();
-  TextEditingController unitTypeController = TextEditingController();
-  TextEditingController categoryController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController unitValueController = TextEditingController();
+  final TextEditingController unitTypeController = TextEditingController();
+  final TextEditingController categoryController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future.microtask(loadOrcamento);
+  }
+
+  String formatOrcamento(dynamic value) {
+    if (value == null) {
+      return '0.00';
+    }
+
+    if (value is num) {
+      return value.toStringAsFixed(2);
+    }
+
+    final parsedValue = double.tryParse(value.toString());
+    return parsedValue != null
+        ? parsedValue.toStringAsFixed(2)
+        : value.toString();
+  }
+
+  Future<void> loadOrcamento() async {
+    try {
+      final result = await context.read<UserProvider>().getOrcamentoByUserId();
+      final values = result['values'];
+      final orcamento = values is Map<String, dynamic>
+          ? values['orcamento']
+          : null;
+
+      if (!mounted || wasSetted) return;
+
+      setState(() {
+        newOrcamento = formatOrcamento(orcamento);
+        orcamentoController.text = newOrcamento;
+      });
+    } catch (e) {
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Erro: ${e.toString().split(":").last}'),
+          duration: const Duration(seconds: 3),
+        ),
+      );
+    }
+  }
 
   void canEditOrcamento() {
-      setState(() {
-        isEditing = !isEditing;
-      });
-    }
+    setState(() {
+      isEditing = !isEditing;
+    });
+  }
 
   void setNewOrcamento(String newText) {
     setState(() {
       newOrcamento = newText;
-      orcamentoController.text = newOrcamento;
       wasSetted = true;
     });
   }
 
-  void newCard(ProductProvider productProvider) {
+  void newCard() {
     setState(() {
-      showDialog (
+      showDialog(
         context: context,
-        builder: (context) {
+        builder: (dialogContext) {
           return AlertDialog(
             title: const Text(
               'Adicionar Novo Produto',
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold
-              ),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             content: Column(
               mainAxisSize: MainAxisSize.min,
@@ -64,7 +106,7 @@ class _CatalogPageState extends State<CatalogPage> {
                     controller: descriptionController,
                     decoration: InputDecoration(
                       label: const Text('Descrição'),
-                      border: OutlineInputBorder()
+                      border: OutlineInputBorder(),
                     ),
                   ),
                 ),
@@ -73,11 +115,17 @@ class _CatalogPageState extends State<CatalogPage> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextField(
                     controller: unitValueController,
-                    keyboardType: TextInputType.numberWithOptions(decimal: true),
-                    inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}$'))],
+                    keyboardType: TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(
+                        RegExp(r'^\d*\.?\d{0,2}$'),
+                      ),
+                    ],
                     decoration: InputDecoration(
                       label: const Text('Valor Unitário'),
-                      border: OutlineInputBorder()
+                      border: OutlineInputBorder(),
                     ),
                   ),
                 ),
@@ -88,7 +136,7 @@ class _CatalogPageState extends State<CatalogPage> {
                     controller: unitTypeController,
                     decoration: InputDecoration(
                       label: const Text('Tipo de Unidade'),
-                      border: OutlineInputBorder()
+                      border: OutlineInputBorder(),
                     ),
                   ),
                 ),
@@ -97,9 +145,11 @@ class _CatalogPageState extends State<CatalogPage> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextField(
                     controller: categoryController,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     decoration: InputDecoration(
                       label: const Text('Categoria'),
-                      border: OutlineInputBorder()
+                      border: OutlineInputBorder(),
                     ),
                   ),
                 ),
@@ -109,46 +159,63 @@ class _CatalogPageState extends State<CatalogPage> {
             actions: [
               TextButton(
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.of(dialogContext).pop();
                 },
                 child: const Text('Cancelar'),
               ),
               ElevatedButton(
                 onPressed: () async {
-                   try {
+                  try {
+                    final categoryId = int.parse(categoryController.text);
+
                     if (!mounted) return;
 
-                    final result = await context.read<ProductProvider>().addProduct(
-                      ProductModelA(
-                        description: descriptionController.text,
-                        unitValue: double.parse(unitValueController.text),
-                        unitType: unitTypeController.text,
-                        category: categoryController.text
-                      )
-                    );
+                    final result = await context
+                        .read<ProductProvider>()
+                        .addProduct(
+                          ProductModelB(
+                            description: descriptionController.text,
+                            unitValue: double.parse(unitValueController.text),
+                            unitType: unitTypeController.text,
+                            categoryId: categoryId,
+                          ),
+                        );
+
+                    if (!mounted || !dialogContext.mounted) return;
 
                     if (result['success'] == true) {
-                      Navigator.of(context).pop();
+                      Navigator.of(dialogContext).pop();
+                      descriptionController.clear();
+                      unitValueController.clear();
+                      unitTypeController.clear();
+                      categoryController.clear();
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text(result['message'] ?? 'Produto adicionado com sucesso!'),
+                          content: Text(
+                            result['message'] ??
+                                'Produto adicionado com sucesso!',
+                          ),
                           duration: const Duration(seconds: 3),
-                        )
+                        ),
                       );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('Erro: ${result['message'] ?? 'Falha ao adicionar o produto!'}'),
+                          content: Text(
+                            'Erro: ${result['message'] ?? 'Falha ao adicionar o produto!'}',
+                          ),
                           duration: const Duration(seconds: 3),
-                        )
+                        ),
                       );
                     }
                   } catch (e) {
+                    if (!mounted) return;
+
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text('Erro: ${e.toString().split(":").last}'),
                         duration: const Duration(seconds: 3),
-                      )
+                      ),
                     );
                   }
                 },
@@ -156,70 +223,99 @@ class _CatalogPageState extends State<CatalogPage> {
               ),
             ],
           );
-        }
+        },
       );
     });
   }
 
-  void removeCard() {
+  void removeCard(int productId) {
     setState(() {
-        showDialog (
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: const Text(
-                'Excluir Produto',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold
-                ),
+      showDialog(
+        context: context,
+        builder: (dialogContext) {
+          return AlertDialog(
+            title: const Text(
+              'Excluir Produto',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            content: const Text(
+              'Tem certeza que deseja excluir este produto?',
+              textAlign: TextAlign.center,
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(dialogContext).pop();
+                },
+                child: const Text('Cancelar'),
               ),
-              content: const Text(
-                'Tem certeza que deseja excluir este produto?',
-                textAlign: TextAlign.center,
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('Cancelar'),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    // Lógica para excluir o produto
-                    Navigator.of(context).pop();
+              ElevatedButton(
+                onPressed: () async {
+                  try {
+                    final result = await context
+                        .read<ProductProvider>()
+                        .deleteProduct(productId);
+
+                    if (!mounted || !dialogContext.mounted) return;
+
+                    if (result['success'] == true) {
+                      Navigator.of(dialogContext).pop();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            result['message'] ??
+                                'Produto excluído com sucesso!',
+                          ),
+                          duration: const Duration(seconds: 3),
+                        ),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            'Erro: ${result['message'] ?? 'Falha ao excluir o produto!'}',
+                          ),
+                          duration: const Duration(seconds: 3),
+                        ),
+                      );
+                    }
+                  } catch (e) {
+                    if (!mounted) return;
+
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Produto excluído com sucesso!'),
-                        duration: Duration(seconds: 3),
-                      )
+                      SnackBar(
+                        content: Text('Erro: ${e.toString().split(":").last}'),
+                        duration: const Duration(seconds: 3),
+                      ),
                     );
-                  },
-                  child: const Text('Excluir'),
-                ),
-              ],
-            );
-          }
-        );
+                  }
+                },
+                child: const Text('Excluir'),
+              ),
+            ],
+          );
+        },
+      );
     });
   }
-  
+
+  @override
+  void dispose() {
+    orcamentoController.dispose();
+    descriptionController.dispose();
+    unitValueController.dispose();
+    unitTypeController.dispose();
+    categoryController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-
-    final productProvider = context.watch<ProductProvider>();
-    
-    final args = ModalRoute.of(context)!.settings.arguments as Map<String, String>;
-    
-    if (wasSetted){
-      orcamentoController.text = newOrcamento;
-    } 
-    else {
-      orcamentoController.text = args['orcamento']!;
-      newOrcamento = args['orcamento']!;
-    }
+    final args = ModalRoute.of(context)?.settings.arguments;
+    final userName = args is Map
+        ? args['userName']?.toString() ?? 'Usuário'
+        : 'Usuário';
 
     return Scaffold(
       appBar: AppBar(
@@ -230,50 +326,52 @@ class _CatalogPageState extends State<CatalogPage> {
           style: TextStyle(
             color: Color.fromARGB(255, 229, 226, 226),
             fontSize: 20,
-            fontWeight: FontWeight.w600
+            fontWeight: FontWeight.w600,
           ),
         ),
       ),
       body: Container(
         decoration: const BoxDecoration(
-          color: Color.fromARGB(232, 248, 202, 202)
+          color: Color.fromARGB(232, 248, 202, 202),
         ),
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Text(
-                'Olá, ${args['userName']}! Seja bem-vindo!',
+                'Olá, $userName! Seja bem-vindo!',
                 style: TextStyle(
                   color: const Color.fromARGB(232, 128, 128, 128),
                   fontSize: 20,
-                  fontWeight: FontWeight.w600
+                  fontWeight: FontWeight.w600,
                 ),
               ),
               const SizedBox(height: 8),
               Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16,
-                  vertical: 8
+                  vertical: 8,
                 ),
                 child: Stack(
-                  children: [ 
+                  children: [
                     TextField(
                       controller: orcamentoController,
-                      keyboardType: TextInputType.numberWithOptions(decimal: true),
-                      inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}$'))],
+                      keyboardType: TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(
+                          RegExp(r'^\d*\.?\d{0,2}$'),
+                        ),
+                      ],
                       onChanged: setNewOrcamento,
                       onSubmitted: setNewOrcamento,
                       decoration: InputDecoration(
                         prefixIcon: Icon(Icons.monetization_on_rounded),
-                        suffix: SizedBox(
-                          width: 33.5,
-                          height: 33.5,
-                    
-                        ),
+                        suffix: SizedBox(width: 33.5, height: 33.5),
                         label: Text('Orçamento'),
                         enabled: isEditing,
-                        border: OutlineInputBorder()
+                        border: OutlineInputBorder(),
                       ),
                     ),
                     Row(
@@ -295,14 +393,11 @@ class _CatalogPageState extends State<CatalogPage> {
                         ),
                       ],
                     ),
-                  ]
+                  ],
                 ),
               ),
               const SizedBox(height: 5),
-              DoubleCardWidget(
-                padding: 20,
-                onTap: removeCard,
-              ),
+              DoubleCardWidget(padding: 20, onTap: removeCard),
               const SizedBox(height: 7),
               Wrap(
                 spacing: 16,
@@ -313,22 +408,20 @@ class _CatalogPageState extends State<CatalogPage> {
                     width: 280,
                     height: 150,
                     child: GestureDetector(
-                      onTap: () => newCard(productProvider),
+                      onTap: newCard,
                       child: Card(
                         color: const Color.fromARGB(255, 243, 243, 243),
                         elevation: 5,
-                        child: Center(
-                          child: Icon(Icons.add)
-                        ),
+                        child: Center(child: Icon(Icons.add)),
                       ),
                     ),
                   ),
-                ] 
+                ],
               ),
-            ]
+            ],
           ),
-        )
-      )
+        ),
+      ),
     );
   }
 }

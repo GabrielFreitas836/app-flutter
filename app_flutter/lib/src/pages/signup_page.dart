@@ -12,14 +12,13 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
-
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   void switchToLoginPage() {
     Navigator.pushNamedAndRemoveUntil(
-      context, 
+      context,
       '/',
       (route) => false,
       arguments: nameController.text,
@@ -38,42 +37,37 @@ class _SignupPageState extends State<SignupPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
-          color: Color.fromARGB(232, 248, 202, 202),
-        ),
+        decoration: BoxDecoration(color: Color.fromARGB(232, 248, 202, 202)),
         child: Form(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-                Padding(
+              Padding(
                 padding: const EdgeInsets.only(bottom: 45),
                 child: Text(
                   'CADASTRO',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 35,
-                    fontWeight: FontWeight.w800
-                  ),
+                  style: TextStyle(fontSize: 35, fontWeight: FontWeight.w800),
                 ),
               ),
               MyTextFormFieldWidget(
                 controller: nameController,
-                horizontalPadding: 16, 
+                horizontalPadding: 16,
                 verticalPadding: 8,
                 icon: Icons.man_2_rounded,
-                inputData: 'Nome de Usuário'
+                inputData: 'Nome de Usuário',
               ),
               MyTextFormFieldWidget(
                 controller: emailController,
-                horizontalPadding: 16, 
+                horizontalPadding: 16,
                 verticalPadding: 8,
-                icon: Icons.email_rounded, 
-                inputData: 'E-mail'
+                icon: Icons.email_rounded,
+                inputData: 'E-mail',
               ),
               MyTextFormFieldWidget(
                 controller: passwordController,
-                horizontalPadding: 16, 
-                verticalPadding: 8, 
+                horizontalPadding: 16,
+                verticalPadding: 8,
                 icon: Icons.lock,
                 inputData: 'Senha',
                 isObscure: true,
@@ -81,13 +75,13 @@ class _SignupPageState extends State<SignupPage> {
               const SizedBox(height: 16),
               MyElevatedButton(
                 onPressed: () async {
-                  try {
-                    final messager = ScaffoldMessenger.of(context);
+                  final messager = ScaffoldMessenger.of(context);
 
+                  try {
                     final result = await context.read<UserProvider>().register(
-                      nameController.text, 
-                      emailController.text, 
-                      passwordController.text
+                      nameController.text,
+                      emailController.text,
+                      passwordController.text,
                     );
 
                     if (!mounted) return;
@@ -95,38 +89,41 @@ class _SignupPageState extends State<SignupPage> {
                     if (result['success'] == true) {
                       messager.showSnackBar(
                         SnackBar(
-                          content: Text(result['message'] as String? ?? 'Cadastro realizado com sucesso!'),
+                          content: Text(
+                            result['message'] as String? ??
+                                'Cadastro realizado com sucesso!',
+                          ),
                           duration: Duration(seconds: 2),
                         ),
                       );
-                    }
-                    else {
+                    } else {
                       messager.showSnackBar(
                         SnackBar(
-                          content: Text(result['message'] as String? ?? 'Falha ao realizar cadastro!'),
+                          content: Text(
+                            result['message'] as String? ??
+                                'Falha ao realizar cadastro!',
+                          ),
                           duration: Duration(seconds: 2),
                         ),
                       );
                     }
 
-                    
                     switchToLoginPage();
                   } catch (e) {
                     if (!mounted) return;
 
-
-                    ScaffoldMessenger.of(context).showSnackBar(
+                    messager.showSnackBar(
                       SnackBar(
                         content: Text('Erro: ${e.toString().split(":").last}.'),
                         duration: Duration(seconds: 2),
-                      )
+                      ),
                     );
                   }
-                }, 
-                buttonText: 'Cadastrar'
-              )
+                },
+                buttonText: 'Cadastrar',
+              ),
             ],
-          )
+          ),
         ),
       ),
     );

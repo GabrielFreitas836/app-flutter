@@ -12,13 +12,9 @@ class UserProvider extends ChangeNotifier {
   Future<Map<String, dynamic>> login(String email, String password) async {
     try {
       data = await _userService.login(
-        UserModel(
-          name: '',
-          email: email,
-          password: password,
-        ),
+        UserModel(name: '', email: email, password: password),
       );
-      
+
       notifyListeners();
       return data!;
     } catch (e) {
@@ -26,22 +22,18 @@ class UserProvider extends ChangeNotifier {
     }
   }
 
-  Future<Map<String, dynamic>> register(String name, String email, String password) async {
+  Future<Map<String, dynamic>> register(
+    String name,
+    String email,
+    String password,
+  ) async {
     try {
       data = await _userService.register(
-        UserModel(
-          name: name,
-          email: email,
-          password: password,
-        ),
+        UserModel(name: name, email: email, password: password),
       );
-      
-      _users.add(UserModel(
-        name: name,
-        email: email,
-        password: password,
-      ));
-      
+
+      _users.add(UserModel(name: name, email: email, password: password));
+
       notifyListeners();
       return data!;
     } catch (e) {
@@ -49,4 +41,25 @@ class UserProvider extends ChangeNotifier {
     }
   }
 
+  Future<Map<String, dynamic>> getOrcamentoByUserId() async {
+    try {
+      data = await _userService.getOrcamentoByUserId();
+
+      notifyListeners();
+      return data!;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>> updateOrcamentoByUserId(String orcamento) async {
+    try {
+      data = await _userService.updateOrcamentoByUserId(orcamento);
+
+      notifyListeners();
+      return data!;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

@@ -12,18 +12,17 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  
+
   void switchToOrcamentoPage(String token, String? userName) {
-
-
     Navigator.pushNamedAndRemoveUntil(
       context,
       '/orcamento',
       (route) => false,
-      arguments: (userName != null && userName.isNotEmpty) ? userName : 'Usuário',
+      arguments: (userName != null && userName.isNotEmpty)
+          ? userName
+          : 'Usuário',
     );
   }
 
@@ -40,12 +39,9 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
-          color: Color.fromARGB(232, 248, 202, 202),
-        ),
+        decoration: BoxDecoration(color: Color.fromARGB(232, 248, 202, 202)),
         child: Form(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -55,22 +51,19 @@ class _LoginPageState extends State<LoginPage> {
                 child: Text(
                   'LOGIN',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 35,
-                    fontWeight: FontWeight.w800
-                  ),
+                  style: TextStyle(fontSize: 35, fontWeight: FontWeight.w800),
                 ),
               ),
               MyTextFormFieldWidget(
                 controller: emailController,
-                horizontalPadding: 16, 
+                horizontalPadding: 16,
                 verticalPadding: 8,
                 icon: Icons.email_rounded,
-                inputData: 'E-mail'
+                inputData: 'E-mail',
               ),
               MyTextFormFieldWidget(
                 controller: passwordController,
-                horizontalPadding: 16, 
+                horizontalPadding: 16,
                 verticalPadding: 8,
                 icon: Icons.lock,
                 inputData: 'Senha',
@@ -81,57 +74,61 @@ class _LoginPageState extends State<LoginPage> {
                 onTap: switchToSignupPage,
                 child: Text(
                   'Não possui conta? Cadastre-se agora!',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500
-                  ),
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
                 ),
               ),
               const SizedBox(height: 15.5),
               MyElevatedButton(
                 onPressed: () async {
+                  final messenger = ScaffoldMessenger.of(context);
+
                   try {
-                    final messenger = ScaffoldMessenger.of(context);
-                    
                     final result = await context.read<UserProvider>().login(
                       emailController.text,
                       passwordController.text,
                     );
-                    
+
                     if (!mounted) return;
-                    
+
                     if (result['success'] == true) {
                       messenger.showSnackBar(
                         SnackBar(
-                          content: Text(result['message'] as String? ?? 'Login realizado com sucesso!'),
+                          content: Text(
+                            result['message'] as String? ??
+                                'Login realizado com sucesso!',
+                          ),
                           duration: Duration(seconds: 2),
                         ),
                       );
-                      switchToOrcamentoPage(result['token'], result['userName']);
+                      switchToOrcamentoPage(
+                        result['token'],
+                        result['userName'],
+                      );
                       return;
                     }
-                    
+
                     messenger.showSnackBar(
                       SnackBar(
                         content: Text(
                           result['message'] as String? ??
-                          'Falha ao realizar login!',
+                              'Falha ao realizar login!',
                         ),
                       ),
                     );
                   } catch (e) {
                     if (!mounted) return;
 
-                    ScaffoldMessenger.of(context).showSnackBar(
+                    messenger.showSnackBar(
                       SnackBar(
                         content: Text('Erro: ${e.toString().split(":").last}'),
                       ),
                     );
                   }
-                }, buttonText: 'Logar',
-              )
-            ]
-          )
+                },
+                buttonText: 'Logar',
+              ),
+            ],
+          ),
         ),
       ),
     );

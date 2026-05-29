@@ -3,14 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class DoubleCardWidget extends StatefulWidget {
-
   final double padding;
-  final void Function()? onTap;
+  final void Function(int productId) onTap;
 
   const DoubleCardWidget({
-    super.key, 
-    required this.padding, 
-    required this.onTap
+    super.key,
+    required this.padding,
+    required this.onTap,
   });
 
   @override
@@ -18,21 +17,19 @@ class DoubleCardWidget extends StatefulWidget {
 }
 
 class _DoubleCardWidgetState extends State<DoubleCardWidget> {
-
   @override
   void initState() {
     super.initState();
 
     Future.microtask(() {
-      if(!mounted) return;
-      
+      if (!mounted) return;
+
       context.read<ProductProvider>().fetchProducts();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-
     final productProvider = context.watch<ProductProvider>();
 
     return Wrap(
@@ -57,59 +54,55 @@ class _DoubleCardWidgetState extends State<DoubleCardWidget> {
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontSize: 21.5,
-                          fontWeight: FontWeight.bold
+                          fontWeight: FontWeight.bold,
                         ),
                         softWrap: true,
                       ),
                     ),
                     IconButton(
-                      onPressed: widget.onTap,
+                      onPressed: () => widget.onTap(
+                        productProvider.products[index].productId,
+                      ),
                       icon: const Icon(Icons.delete),
                       iconSize: 18,
-                    )
+                    ),
                   ],
                 ),
                 Text(
                   'R\$ ${productProvider.products[index].unitValue.toStringAsFixed(2)}',
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                    fontSize:  11,
-                    fontWeight: FontWeight.bold
+                    fontSize: 11,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 Text(
                   productProvider.products[index].unitType,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                    fontSize:  11,
-                    fontWeight: FontWeight.bold
+                    fontSize: 11,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 Text(
                   'Cat: ${productProvider.products[index].category}',
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                    fontSize:  15,
-                    fontWeight: FontWeight.bold
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 10),
                   child: Badge(
                     backgroundColor: Colors.blueGrey,
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 5
-                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     label: Text(
                       'Badge',
-                      style: TextStyle(
-                        fontSize: 11,
-                        letterSpacing: 1.25
-                      ),
+                      style: TextStyle(fontSize: 11, letterSpacing: 1.25),
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ),
