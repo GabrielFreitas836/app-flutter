@@ -397,7 +397,27 @@ class _CatalogPageState extends State<CatalogPage> {
                 ),
               ),
               const SizedBox(height: 5),
-              DoubleCardWidget(padding: 20, onTap: removeCard),
+              DoubleCardWidget(
+                padding: 20,
+                onTap: removeCard,
+                cardLabelBuilder: (product, index) {
+                  final budget = double.tryParse(orcamentoController.text) ?? 0.0;
+                  final isAvailable = product.unitValue <= budget;
+
+                  return Text(
+                    isAvailable ? 'Disponível' : 'Indisponível',
+                    style: TextStyle(
+                      color: isAvailable
+                          ? const Color.fromARGB(255, 77, 236, 104)
+                          : const Color.fromARGB(255, 236, 77, 77),
+                      fontSize: 11,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  );
+                },
+
+                  ),
+              
               const SizedBox(height: 7),
               Wrap(
                 spacing: 16,

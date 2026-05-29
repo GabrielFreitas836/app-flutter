@@ -1,3 +1,4 @@
+import 'package:app_flutter/src/models/product_model_a.dart';
 import 'package:app_flutter/src/providers/product_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -5,11 +6,13 @@ import 'package:provider/provider.dart';
 class DoubleCardWidget extends StatefulWidget {
   final double padding;
   final void Function(int productId) onTap;
+  final Widget Function(ProductModelA product, int index)? cardLabelBuilder;
 
   const DoubleCardWidget({
     super.key,
     required this.padding,
     required this.onTap,
+    this.cardLabelBuilder,
   });
 
   @override
@@ -97,10 +100,9 @@ class _DoubleCardWidgetState extends State<DoubleCardWidget> {
                   child: Badge(
                     backgroundColor: Colors.blueGrey,
                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    label: Text(
-                      'Badge',
-                      style: TextStyle(fontSize: 11, letterSpacing: 1.25),
-                    ),
+                    label: widget.cardLabelBuilder != null
+                      ? widget.cardLabelBuilder!(productProvider.products[index], index)
+                      : const SizedBox.shrink(),
                   ),
                 ),
               ],
