@@ -1,5 +1,5 @@
 name: app_flutter
-description: "Projeto de catálogo interativo dos produtos de um supermercado genérico."
+description: "Projeto de catálogo interativo de produtos."
 publish_to: 'none'
 version: 0.1.0+1
 
