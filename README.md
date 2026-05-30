@@ -4,7 +4,7 @@
 
 - [📝 Descrição do Projeto](#-descrição-do-projeto)
 - [🏗️ Arquitetura](#️-arquitetura)
-- [🛠️ Ferramentas Utilizadas](#-ferramentas-utilizadas)
+- [🛠️ Ferramentas Utilizadas](#%EF%B8%8F-ferramentas-utilizadas)
 - [📁 Estrutura de Pastas](#-estrutura-de-pastas)
 
 ---
